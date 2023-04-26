@@ -1,3 +1,5 @@
+from scapy.all import *
+
 def main():
     print("hello world")
 
