@@ -1,5 +1,5 @@
 from scapy.all import * 
 from pythonping import ping 
 
-def mode3():
-    print("you chose mode 3")
+def mode3(): 
+    print("you chose mode 3") 

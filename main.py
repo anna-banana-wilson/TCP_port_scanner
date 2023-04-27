@@ -2,16 +2,26 @@
 import sys
 from scapy.all import *
 from pythonping import ping
+import os 
 
-def main():
-    ping_return = ping('131.229.72.13', verbose=True, count = 1)
-    for i in ping_return:
-        print(i)
+
+def HostUp(hostname, waittime=1000):
+    '''Function returns True if host IP returns a ping, else False'''
+    assert isinstance(hostname, str), \
+        "IP/hostname must be provided as a string."
+    if os.system("ping -c 1 -W " + str(waittime) + " " +
+                 hostname + " > /dev/null 2>&1") is 0:
+        HOST_UP = True
+    else:
+        HOST_UP = False
+    return HOST_UP
     
 
+def main():
+    is_alive = HostUp("131.229.72.13", waittime=1000) 
+    
 
 if __name__ == "__main__":
-
 
     main()
 
