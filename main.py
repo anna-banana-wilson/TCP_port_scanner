@@ -4,6 +4,7 @@ from scapy.all import *
 from pythonping import ping
 import os 
 import argparse 
+import datetime
 
 
 def HostUp(hostname, waittime=1000):
@@ -21,9 +22,9 @@ def HostUp(hostname, waittime=1000):
 def main():
     # positional arguments and options 
     parser = argparse.ArgumentParser(description="Port Scanner")
-    parser.add_argument("mode [normal/syn/fin]") 
-    parser.add_argument("-order [order/random]")
-    parser.add_argument("-ports [all/known]", )
+    parser.add_argument("mode [normal/syn/fin]", choices=['normal', 'syn', 'fin']) 
+    parser.add_argument("-order [order/random]", choices=['order', 'random'])
+    parser.add_argument("-ports [all/known]", choices=['all', 'known'])
     parser.add_argument("target_ip", help="list the target host's IP address")
     #I'M ASSUMING we also need to use action= somewhere to link to the different files. 
     
@@ -32,7 +33,9 @@ def main():
     
 
 if __name__ == "__main__":
-
+    now = datetime.datetime.now()
+    print("Starting port scan at            ", now)
+    
     main()
 
 # i hope this works i really do because wtf 
