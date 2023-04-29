@@ -13,11 +13,13 @@ def mode3():
     i= IP()
     t= TCP()
     i.dst='131.229.72.13'
-    t.dport=8080
+    t.dport=22
     t.flags="F"
     packet=i/t
-    answered,unanswered=sr(packet, timeout=2)
-    answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
+    answered,unanswered = sr(packet, timeout=2)
+    #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
+    if isinstance(answered, type(None)):
+        print('Port' + str(x) + ' is open!')
     # serviceName = socket.getservbyport(1, 'tcp') # this returns just the service name 
     # print(serviceName)
     # print("Name of the service running at port number %d : %s"%(portNumber, serviceName));
