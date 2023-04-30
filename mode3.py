@@ -23,20 +23,20 @@ def mode3():
     endport = 25
 
     ip1 = IP( dst ="131.229.72.13")
-   
-    
-    sy1 = TCP(dport=20, flags="F", seq=12345)
-    packet = ip1/sy1
-    p =sr1(packet, timeout = 50)   
-    #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
-    if isinstance(p, type(None)):
-        print('Port' + str(20) + ' is open!')
-    else:
-        print("Port is closed")
 
-    # serviceName = socket.getservbyport(1, 'tcp') # this returns just the service name 
-    # print(serviceName)
-    # print("Name of the service running at port number %d : %s"%(portNumber, serviceName));
-    # p = sr1(IP(dst="www.slashdot.org")/ICMP()/"XXXXXXXXXXX")
-    # p.show()
+
+    for x in range(startport, endport):
+        sy1 = TCP(dport=x, flags="F", seq=12345)
+        packet = ip1/sy1
+        response = sr1(packet, timeout = 2)   
+        #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
+        if isinstance(response, type(None)):
+            print(type(response))
+            print("Port " , x , " is open")
+
+        # serviceName = socket.getservbyport(1, 'tcp') # this returns just the service name 
+        # print(serviceName)
+        # print("Name of the service running at port number %d : %s"%(portNumber, serviceName));
+        # p = sr1(IP(dst="www.slashdot.org")/ICMP()/"XXXXXXXXXXX")
+        # p.show()
 mode3()
