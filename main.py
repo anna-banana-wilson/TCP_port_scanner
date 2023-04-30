@@ -5,6 +5,9 @@ from pythonping import ping
 import os 
 import argparse 
 import datetime
+import mode1
+import mode2
+import mode3 
 
 
 def HostUp(hostname, waittime=1000):
