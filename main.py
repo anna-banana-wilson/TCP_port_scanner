@@ -6,8 +6,8 @@ import os
 import argparse 
 import datetime
 import mode1
-import mode2
-import mode3 
+# import mode2
+# import mode3 
 
 
 def HostUp(hostname, waittime=1000):
@@ -33,7 +33,8 @@ def main():
     order = parser.order 
     ports = parser.ports 
     target_ip = parser.target_ip 
-
+    args = parser.parse_args() 
+    
     #I'M ASSUMING we also need to use action= somewhere to link to the different files. 
     
     is_alive = HostUp("131.229.72.13", waittime=1000) 

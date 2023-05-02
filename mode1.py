@@ -51,5 +51,5 @@ def mode1():
                 # send the RST packet (reset packet, so we can get rid of the connection and move onto the next one):
                 sr(IP(dst=target)/TCP(dport=response.sport, flags = 'R'), timeout = 0.5, verbose = 0)
 
-mode1()
+# mode1()
     
