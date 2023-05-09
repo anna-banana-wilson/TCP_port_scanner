@@ -78,4 +78,3 @@ def mode3(ports, mode, target_ip):
         print("Invalid order argument")
         exit() # im not sure if this is the right thing, but i want to stop if they type an invalid option
 
-mode3()

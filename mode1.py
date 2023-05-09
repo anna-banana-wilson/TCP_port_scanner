@@ -100,7 +100,4 @@ def mode1(order, ports, target_ip):
     
     # end = time.time()
     # print(f'Time taken {end-start:.2f} seconds')
-
-
-mode1(order = 'order', ports = 'testoption', target_ip = '131.229.72.13')
     

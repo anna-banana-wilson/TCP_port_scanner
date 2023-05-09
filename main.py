@@ -6,6 +6,8 @@ import os
 import argparse 
 import datetime
 import mode1
+import mode2
+import mode3
 import time 
 # import mode2
 # import mode3 
