@@ -27,11 +27,16 @@ def mode1(order, ports, target_ip):
             # if actually have a valid response from the target and and we a get a SYN-ACK (0x12 means SYN-ACK)
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-                    print(x)
+                    
+                    # grab the sequence number of the server and increment by 1
+                    my_ack = response.seq+1 
+                    # create ack packet 
+                    ack_packet = TCP(dport=response.sport, flags = 'A', seq=101, ack=my_ack)
+                    # send the ACK packet to complete the 3 way handshake: 
+                    sr(ip/ack_packet)
+                    # grab the banner 
                     print(socket.getservbyport(x, "tcp"))
-                    # send the RST packet (reset packet, so we can get rid of the connection and move onto the next one):
-                    sr(IP(dst=target_ip)/TCP(dport=response.sport, flags = 'R'), timeout = 0.5, verbose = 0)
-
+    
     # RANDOM 
     elif(order == 'random'):
         port_list = []
@@ -49,10 +54,15 @@ def mode1(order, ports, target_ip):
             # if actually have a valid response from the target and and we a get a SYN-ACK (0x12 means SYN-ACK)
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-                    # print(x)
+
+                    # grab the sequence number of the server and increment by 1
+                    my_ack = response.seq+1 
+                    # create ack packet 
+                    ack_packet = TCP(dport=response.sport, flags = 'A', seq=101, ack=my_ack)
+                    # send the ACK packet to complete the 3 way handshake: 
+                    sr(ip/ack_packet)
+                    # grab the banner 
                     print(socket.getservbyport(x, "tcp"))
-                    # send the RST packet (reset packet, so we can get rid of the connection and move onto the next one):
-                    sr(IP(dst=target_ip)/TCP(dport=response.sport, flags = 'R'), timeout = 0.5, verbose = 0)
     
     # INVALID 
     else: 
