@@ -5,7 +5,14 @@ import sys
 import random
 
 def mode1(order, ports, target_ip):
-   
+
+    # create a random source ip address to obscure our identity
+    src_ip = ".".join(map(str, (random.randint(0, 255) 
+                        for _ in range(4))))
+    
+    # create a random source port to obscure identity
+    src_port = random.randint(0, 65535)
+
     if(ports == 'all'):
         endport = 65535
     elif(ports == 'known'):
@@ -19,7 +26,7 @@ def mode1(order, ports, target_ip):
     # ORDER 
     if(order == 'order'):
         for x in range(0, endport):
-            packet = IP(dst = target_ip)/TCP(dport = x, flags = 'S')
+            packet = IP(src = src_ip, dst = target_ip)/TCP(sport = src_port, dport = x, flags = 'S')
             
             response = sr1(packet, timeout = 1, verbose = 0) # this sends and recieves one time
             # print('port: ', x)
@@ -31,9 +38,9 @@ def mode1(order, ports, target_ip):
                     # grab the sequence number of the server and increment by 1
                     my_ack = response.seq+1 
                     # create ack packet 
-                    ack_packet = TCP(dport=response.sport, flags = 'A', seq=101, ack=my_ack)
+                    ack_packet = IP(src = src_ip, dst = target_ip)/TCP(sport = src_port, dport=response.sport, flags = 'A', seq=101, ack=my_ack)
                     # send the ACK packet to complete the 3 way handshake: 
-                    sr(ip/ack_packet)
+                    sr(ip/ack_packet, timeout = 1, verbose = 0)
                     # grab the banner 
                     print(socket.getservbyport(x, "tcp"))
     
@@ -58,9 +65,9 @@ def mode1(order, ports, target_ip):
                     # grab the sequence number of the server and increment by 1
                     my_ack = response.seq+1 
                     # create ack packet 
-                    ack_packet = TCP(dport=response.sport, flags = 'A', seq=101, ack=my_ack)
+                    ack_packet = IP(src = src_ip, dst = target_ip)/TCP(dport=response.sport, flags = 'A', seq=101, ack=my_ack)
                     # send the ACK packet to complete the 3 way handshake: 
-                    sr(ip/ack_packet)
+                    sr(ip/ack_packet, timeout = 1, verbose = 0)
                     # grab the banner 
                     print(socket.getservbyport(x, "tcp"))
     
