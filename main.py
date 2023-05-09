@@ -6,6 +6,7 @@ import os
 import argparse 
 import datetime
 import mode1
+import time 
 # import mode2
 # import mode3 
 
@@ -23,7 +24,7 @@ def HostUp(hostname, waittime=1000):
     
 
 def main():
-
+    seconds = time.time() 
     # positional arguments and options 
     parser = argparse.ArgumentParser(description="Port Scanner") 
     parser.add_argument("mode", choices=['normal', 'syn', 'fin']) 
@@ -44,6 +45,7 @@ def main():
     now = datetime.datetime.now()
     print("Starting port scan at            ", now)
     print("Interesting ports on ", target_ip, ":")
+    print("Scanned in ", seconds, " seconds.")
 
     
 
