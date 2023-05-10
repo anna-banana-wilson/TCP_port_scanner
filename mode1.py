@@ -4,14 +4,15 @@ import time
 import sys 
 import random
 
-def mode1(order, ports, target_ip):
+def normal(order, ports, target_ip):
+    print("MODE 1 RUNNING")
+
+    num_open = 0
 
     if(ports == 'all'):
         endport = 65535
     elif(ports == 'known'):
         endport = 1023
-    elif(ports == 'testoption'):
-        endport = 23
     else:
         print("Invalid ports argument")
         exit() # im not sure if this is the right thing, but i want to stop if they type an invalid option
@@ -27,7 +28,7 @@ def mode1(order, ports, target_ip):
             # if actually have a valid response from the target and and we a get a SYN-ACK (0x12 means SYN-ACK)
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-                    
+                    num_open += 1
                     # grab the sequence number of the server and increment by 1
                     my_ack = response.seq+1 
                     # create ack packet 
@@ -54,7 +55,7 @@ def mode1(order, ports, target_ip):
             # if actually have a valid response from the target and and we a get a SYN-ACK (0x12 means SYN-ACK)
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-
+                    num_open += 1
                     # grab the sequence number of the server and increment by 1
                     my_ack = response.seq+1 
                     # create ack packet 
@@ -69,35 +70,5 @@ def mode1(order, ports, target_ip):
         print("Invalid order argument")
         exit() # im not sure if this is the right thing, but i want to stop if they type an invalid option
 
-        
-     
-        
-    # s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # # here we asking for the target website
-    # # or host
-    # target = sys.argv[]     # edit to the argument it is 
-    
-    # # next line gives us the ip address
-    # # of the target
-    # target_ip = sys.argv[]  # edit to the argument it is 
-    
-    # try:
-    #     s.connect((target_ip, port))
-    #     return True
-    # except:
-    #     return False
-    
-    
-    # start = time.time()
-    
-    # # here we are scanning port 0 to 4
-    # for port in range(5):
-    #     if port_scan(port):
-    #         print(f'port {port} is open')
-    #     else:
-    #         print(f'port {port} is closed')
-    
-    # end = time.time()
-    # print(f'Time taken {end-start:.2f} seconds')
+    return num_open
     

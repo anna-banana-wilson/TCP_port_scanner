@@ -9,11 +9,9 @@ import mode1
 import mode2
 import mode3
 import time 
-# import mode2
-# import mode3 
 
 
-def HostUp(hostname, waittime=1000):
+def HostUp(hostname, waittime=1000): # this function is from a github user to check ping status 
     # Function returns True if host IP returns a ping, else False
     assert isinstance(hostname, str), \
         "IP/hostname must be provided as a string."
@@ -26,28 +24,50 @@ def HostUp(hostname, waittime=1000):
     
 
 def main():
-    seconds = time.time() 
     # positional arguments and options 
-    parser = argparse.ArgumentParser(description="Port Scanner") 
+    parser = argparse.ArgumentParser(description="Port Scanner") # initialize ArgumentParser 
     parser.add_argument("mode", choices=['normal', 'syn', 'fin']) 
     parser.add_argument("order", choices=['order', 'random'])
-    parser.add_argument("ports", choices=['all', 'known', 'testoption'])
+    parser.add_argument("ports", choices=['all', 'known'])
     parser.add_argument("target_ip", help="list the target host's IP address")
-    mode = parser.mode
-    order = parser.order 
-    ports = parser.ports 
-    target_ip = parser.target_ip 
+    args = parser.parse_args() # grab arguments from command line 
 
-    args = parser.parse_args() 
-    
-    #I'M ASSUMING we also need to use action= somewhere to link to the different files. 
-    
+    # storing various arguments into variables 
+    mode = args.mode
+    order = args.order 
+    ports = args.ports 
+    target_ip = args.target_ip 
+
+    # using ping to check if target host is up and running 
     is_alive = HostUp(target_ip, waittime=1000) 
+    
+    if is_alive == True: # if so, then run the port scanner 
 
-    now = datetime.datetime.now()
-    print("Starting port scan at            ", now)
-    print("Interesting ports on ", target_ip, ":")
-    print("Scanned in ", seconds, " seconds.")
+        start_time = time.time() 
+        now = datetime.datetime.now()
+        print("Starting port scan at            ", now)
+        print("Interesting ports on ", target_ip, ":")
+        
+        if(mode == 'normal'):
+            num_open = mode1.normal(order = order, ports = ports, target_ip = target_ip)
+        if(mode == 'syn'):
+            num_open = mode2.syn(order = order, ports = ports, target_ip = target_ip)
+        if(mode == 'fin'): 
+            num_open = mode3.fin(order = order, ports = ports, target_ip = target_ip)
+        
+        print("IP address (1 host up) scanned in %s seconds" % (time.time() - start_time))
+
+        if(ports == 'all'):
+            num_closed = 65535 - num_open
+        elif(ports == 'known'):
+            num_closed = 1023 - num_open
+            
+        print("Not shown: %s closed ports" % (num_closed))
+
+    else:
+        print("The target host is down.")
+        exit() 
+    
 
     
 
@@ -55,5 +75,3 @@ if __name__ == "__main__":
     
     main()
 
-# i hope this works i really do because wtf 
-# okay trying this again 

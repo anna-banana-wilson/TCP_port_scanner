@@ -1,31 +1,15 @@
 from scapy.all import * 
 import socket
 
-def mode3(ports, mode, target_ip): 
+def fin(ports, mode, target_ip): 
     print("you chose mode 3") 
 
-    # ip1 = IP(src="50.106.175.86", dst ="131.229.72.13")
-    # sy1 = TCP(dport=22, flags="F", seq=12345)
-    # packet = ip1/sy1
-    # packet =  IP(src="50.106.175.86", dst ="131.229.72.13"/TCP(dport=22, flags="F", seq=12345)
-    # p = sr1(packet, timeout=5)
-    # p.show()
-    # i= IP()
-    # t= TCP()
-    # i.dst='131.229.72.13'
-    # t.dport=22
-    # t.flags="F"
-    # packet=i/t
-    # print(packet)
-    # answered,unanswered = sr(packet)
-    # print(type(answered))
+    num_open = 0
 
     if(ports == 'all'):
         endport = 65535
     elif(ports == 'known'):
         endport = 1023
-    elif(ports == 'testoption'):
-        endport = 23
     else:
         print("Invalid ports argument")
         exit() # im not sure if this is the right thing, but i want to stop if they type an invalid option
@@ -43,6 +27,7 @@ def mode3(ports, mode, target_ip):
             response = sr1(packet, timeout = 2)   
             #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
             if isinstance(response, type(None)):
+                num_open += 1
                 # print(type(response))
                 serviceName = socket.getservbyport(x, 'tcp') # this returns just the service name 
                 print(serviceName)
@@ -69,6 +54,7 @@ def mode3(ports, mode, target_ip):
             response = sr1(packet, timeout = 2)   
             #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
             if isinstance(response, type(None)):
+                num_open += 1
                 # print(type(response))
                 serviceName = socket.getservbyport(x, 'tcp') # this returns just the service name 
                 print(serviceName)
@@ -77,4 +63,6 @@ def mode3(ports, mode, target_ip):
     else: 
         print("Invalid order argument")
         exit() # im not sure if this is the right thing, but i want to stop if they type an invalid option
+
+    return num_open
 
