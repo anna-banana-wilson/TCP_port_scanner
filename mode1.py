@@ -5,8 +5,7 @@ import sys
 import random
 
 def normal(order, ports, target_ip):
-    print("MODE 1 RUNNING")
-
+    
     num_open = 0
 
     if(ports == 'all'):
@@ -63,7 +62,9 @@ def normal(order, ports, target_ip):
                     # send the ACK packet to complete the 3 way handshake: 
                     sr(ack_packet, timeout = 1, verbose = 0)
                     # grab the banner 
-                    print(socket.getservbyport(x, "tcp"))
+                    banner = socket.getservbyport(x, "tcp")
+                    print("PORT         STATE       SERVICE")
+                    print(x, "open", banner) 
     
     # INVALID 
     else: 
