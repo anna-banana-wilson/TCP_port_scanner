@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-import sys
+
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 from pythonping import ping
 import os 

@@ -1,3 +1,5 @@
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 
 def syn(order, ports, target_ip):
@@ -27,7 +29,7 @@ def syn(order, ports, target_ip):
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
                     num_open += 1
-                    
+
                     banner = socket.getservbyport(x, "tcp")
                     
                     print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
