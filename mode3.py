@@ -1,7 +1,7 @@
 from scapy.all import * 
 import socket
 
-def fin(ports, mode, target_ip): 
+def fin(order, ports, target_ip): 
     print("you chose mode 3") 
 
     num_open = 0
@@ -21,16 +21,21 @@ def fin(ports, mode, target_ip):
 
     # ORDER 
     if(order == 'order'):
+
+        print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
+
         for x in range(startport, endport):
             sy1 = TCP(dport=x, flags="F", seq=12345)
             packet = ip1/sy1
-            response = sr1(packet, timeout = 2)   
+            response = sr1(packet, timeout = 2, verbose = 0)   
             #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
             if isinstance(response, type(None)):
                 num_open += 1
                 # print(type(response))
-                serviceName = socket.getservbyport(x, 'tcp') # this returns just the service name 
-                print(serviceName)
+                banner = socket.getservbyport(x, "tcp")
+                    
+                print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
+    
 
             # serviceName = socket.getservbyport(1, 'tcp') # this returns just the service name 
             # print(serviceName)
@@ -40,6 +45,9 @@ def fin(ports, mode, target_ip):
 
     # RANDOM 
     elif(order == 'random'):
+
+        print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
+
         port_list = []
 
         for i in range (0, endport + 1): # the plus 1 is because of how python range() works
@@ -49,15 +57,19 @@ def fin(ports, mode, target_ip):
         random.shuffle(port_list)
 
         for x in range(startport, endport):
+            
             sy1 = TCP(dport=x, flags="F", seq=12345)
             packet = ip1/sy1
-            response = sr1(packet, timeout = 2)   
+            response = sr1(packet, timeout = 2, verbose = 0)   
             #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
             if isinstance(response, type(None)):
+                print(x)
                 num_open += 1
                 # print(type(response))
-                serviceName = socket.getservbyport(x, 'tcp') # this returns just the service name 
-                print(serviceName)
+                banner = socket.getservbyport(x, "tcp")
+                    
+                print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
+    
 
     # INVALID 
     else: 

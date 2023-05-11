@@ -55,6 +55,7 @@ def main():
         if(mode == 'fin'): 
             num_open = mode3.fin(order = order, ports = ports, target_ip = target_ip)
         
+        
         print("IP address (1 host up) scanned in %s seconds" % (time.time() - start_time))
 
         if(ports == 'all'):

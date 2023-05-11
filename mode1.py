@@ -18,12 +18,15 @@ def normal(order, ports, target_ip):
     
     # ORDER 
     if(order == 'order'):
+
+        print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
+
         for x in range(0, endport):
             packet = IP(dst = target_ip)/TCP(dport = x, flags = 'S')
             
             response = sr1(packet, timeout = 1, verbose = 0) # this sends and recieves one time
             # print('port: ', x)
-
+        
             # if actually have a valid response from the target and and we a get a SYN-ACK (0x12 means SYN-ACK)
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
@@ -35,10 +38,15 @@ def normal(order, ports, target_ip):
                     # send the ACK packet to complete the 3 way handshake: 
                     sr(ack_packet, timeout = 1, verbose = 0)
                     # grab the banner 
-                    print(socket.getservbyport(x, "tcp"))
+                    banner = socket.getservbyport(x, "tcp")
+                    
+                    print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
     
     # RANDOM 
     elif(order == 'random'):
+
+        print('{:<20}'.format('PORT'), '{:^20}'.format('STATE'), '{:>20}'.format('SERVICE')) 
+
         port_list = []
 
         for i in range (0, endport + 1): # the plus 1 is because of how python range() works
@@ -63,8 +71,8 @@ def normal(order, ports, target_ip):
                     sr(ack_packet, timeout = 1, verbose = 0)
                     # grab the banner 
                     banner = socket.getservbyport(x, "tcp")
-                    print("PORT         STATE       SERVICE")
-                    print(x, "open", banner) 
+                    
+                    print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
     
     # INVALID 
     else: 

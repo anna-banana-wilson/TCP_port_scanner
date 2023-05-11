@@ -14,6 +14,9 @@ def syn(order, ports, target_ip):
     
     # ORDER 
     if(order == 'order'):
+
+        print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
+
         for x in range(0, endport):
             packet = IP(dst = target_ip)/TCP(dport = x, flags = 'S')
             
@@ -24,13 +27,19 @@ def syn(order, ports, target_ip):
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
                     num_open += 1
-                    print(x)
-                    print(socket.getservbyport(x, "tcp"))
+                    
+                    banner = socket.getservbyport(x, "tcp")
+                    
+                    print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
+    
                     # send the RST packet (reset packet, so we can get rid of the connection and move onto the next one):
                     sr(IP(dst=target_ip)/TCP(dport=response.sport, flags = 'R'), timeout = 0.5, verbose = 0)
 
     # RANDOM 
     elif(order == 'random'):
+
+        print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
+
         port_list = []
 
         for i in range (0, endport + 1): # the plus 1 is because of how python range() works
@@ -48,7 +57,10 @@ def syn(order, ports, target_ip):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
                     num_open += 1
                     # print(x)
-                    print(socket.getservbyport(x, "tcp"))
+                    banner = socket.getservbyport(x, "tcp")
+                    
+                    print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
+    
                     # send the RST packet (reset packet, so we can get rid of the connection and move onto the next one):
                     sr(IP(dst=target_ip)/TCP(dport=response.sport, flags = 'R'), timeout = 0.5, verbose = 0)
     
