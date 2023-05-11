@@ -35,13 +35,13 @@ def fin(order, ports, target_ip):
         print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
 
         # testing for individual ports 
-        sy1 = TCP(dport=21, flags="F", seq=12345)
+        sy1 = TCP(dport=443, flags="F", seq=12345)
         packet = ip1/sy1
         response = sr1(packet, timeout = 2, verbose = 0)   
         if isinstance(response, type(None)):
-            banner = str(grab_banner(target_ip, 21))
+            banner = str(grab_banner(target_ip, 443))
                     
-            print('{:<10}'.format('21'), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
+            print('{:<10}'.format('443'), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
 
         # for x in range(0, endport):
         #     sy1 = TCP(dport=x, flags="F", seq=12345)
