@@ -1,8 +1,18 @@
 from scapy.all import * 
 import socket
 
+
+def grab_banner(ip_address, port):
+    try:
+        s = socket.socket()
+        s.connect((ip_address, port))
+        banner = s.recv(1024)
+        s.close()
+        return banner
+    except:
+        return ''
+
 def fin(order, ports, target_ip): 
-    print("you chose mode 3") 
 
     num_open = 0
 
@@ -14,34 +24,42 @@ def fin(order, ports, target_ip):
         print("Invalid ports argument")
         exit() # im not sure if this is the right thing, but i want to stop if they type an invalid option
     
-    startport = 0
-    endport = 25
 
-    ip1 = IP( dst ="131.229.72.13")
+    ip1 = IP( dst = target_ip)
 
     # ORDER 
     if(order == 'order'):
 
         print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
 
-        for x in range(startport, endport):
-            sy1 = TCP(dport=x, flags="F", seq=12345)
-            packet = ip1/sy1
-            response = sr1(packet, timeout = 2, verbose = 0)   
-            #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
-            if isinstance(response, type(None)):
-                num_open += 1
-                # print(type(response))
-                banner = socket.getservbyport(x, "tcp")
+        # testing for individual ports 
+        sy1 = TCP(dport=21, flags="F", seq=12345)
+        packet = ip1/sy1
+        response = sr1(packet, timeout = 2, verbose = 0)   
+        if isinstance(response, type(None)):
+            banner = str(grab_banner(target_ip, 21))
                     
-                print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
-    
+            print('{:<10}'.format('21'), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
 
-            # serviceName = socket.getservbyport(1, 'tcp') # this returns just the service name 
-            # print(serviceName)
-            # print("Name of the service running at port number %d : %s"%(portNumber, serviceName));
-            # p = sr1(IP(dst="www.slashdot.org")/ICMP()/"XXXXXXXXXXX")
-            # p.show()
+        # for x in range(0, endport):
+        #     sy1 = TCP(dport=x, flags="F", seq=12345)
+        #     packet = ip1/sy1
+        #     response = sr1(packet, timeout = 2, verbose = 0)   
+        #     #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
+        
+        #     if isinstance(response, type(None)):
+            
+        #         num_open += 1
+        #         # print(type(response))
+        #         banner = str(grab_banner(target_ip, x))
+                    
+        #         print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
+    
+        #     # serviceName = socket.getservbyport(1, 'tcp') # this returns just the service name 
+        #     # print(serviceName)
+        #     # print("Name of the service running at port number %d : %s"%(portNumber, serviceName));
+        #     # p = sr1(IP(dst="www.slashdot.org")/ICMP()/"XXXXXXXXXXX")
+        #     # p.show()
 
     # RANDOM 
     elif(order == 'random'):
@@ -56,17 +74,18 @@ def fin(order, ports, target_ip):
         
         random.shuffle(port_list)
 
-        for x in range(startport, endport):
+        for x in range(0, endport):
             
             sy1 = TCP(dport=x, flags="F", seq=12345)
             packet = ip1/sy1
-            response = sr1(packet, timeout = 2, verbose = 0)   
+            response = sr1(packet, timeout = 0.5, verbose = 0)   
             #answered.summary(lfilter = lambda s,r: r.sprintf("%TCP.flags%") == "SA",prn=lambda s,r: r.sprintf("%TCP.sport% is open"))
+        
             if isinstance(response, type(None)):
-                print(x)
+            
                 num_open += 1
                 # print(type(response))
-                banner = socket.getservbyport(x, "tcp")
+                banner = str(grab_banner(target_ip, x))
                     
                 print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
     
