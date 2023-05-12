@@ -52,6 +52,7 @@ Jade:
 Anna:
 - finding out how to implement mode 2 (SYN scan), from there the rest of the modes 
 - loops, options (random or order, etc), ping to ensure the host is alive 
+
 The Challenges We Overcame Together:
 - We largely pair-programmed this project. Most of the code was written collaboratively, so individual contributions don't apply as much as we physically met up seven or eight times to implement this together side by side. 
 - The biggest challenge we overcame was definitely the logic of the port scanner, we took a while figuring out what the output should be, especially when it came to the fin scan and retrieving banners. 
