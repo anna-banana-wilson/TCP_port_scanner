@@ -48,6 +48,7 @@ Jade:
 - formatting the end aesthetics of the port scanner
 - research and finding resources that helped with the implementation process 
 - fin scan mode 3 and figuring out the bug that wouldn't work with getservbyport; using other method 
+
 Anna:
 - finding out how to implement mode 2 (SYN scan), from there the rest of the modes 
 - loops, options (random or order, etc), ping to ensure the host is alive 
