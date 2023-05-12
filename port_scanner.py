@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import logging
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR) # supresses annoying scapy warnings
 from scapy.all import *
 from pythonping import ping
 import os 
@@ -23,7 +23,7 @@ def HostUp(hostname, waittime=1000): # this function is from a github user to ch
     else:
         HOST_UP = False
     return HOST_UP
-    
+# github user is listed in sources! 
 
 def main():
     # positional arguments and options 
@@ -45,8 +45,8 @@ def main():
     
     if is_alive == True: # if so, then run the port scanner 
 
-        start_time = time.time() 
-        now = datetime.datetime.now()
+        start_time = time.time() # taking time 
+        now = datetime.datetime.now() # taking current time for the start of port scan 
         print("Starting port scan at            ", now)
         print("Interesting ports on ", target_ip, ":")
         
@@ -58,7 +58,7 @@ def main():
             num_open = mode3.fin(order = order, ports = ports, target_ip = target_ip)
         
         
-        print("IP address (1 host up) scanned in %s seconds" % (time.time() - start_time))
+        print("IP address (1 host up) scanned in %s seconds" % (time.time() - start_time)) 
 
         if(ports == 'all'):
             num_closed = 65535 - num_open

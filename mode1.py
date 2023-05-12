@@ -1,5 +1,5 @@
 import logging
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR) # supresses annoying scapy warnings
 from scapy.all import *
 import socket
 import time
@@ -8,6 +8,7 @@ import random
 
 def normal(order, ports, target_ip):
     
+    # counter for open ports 
     num_open = 0
 
     if(ports == 'all'):
@@ -27,7 +28,6 @@ def normal(order, ports, target_ip):
             packet = IP(dst = target_ip)/TCP(dport = x, flags = 'S')
             
             response = sr1(packet, timeout = 1, verbose = 0) # this sends and recieves one time
-            # print('port: ', x)
         
             # if actually have a valid response from the target and and we a get a SYN-ACK (0x12 means SYN-ACK)
             if not isinstance(response, type(None)):
@@ -49,7 +49,7 @@ def normal(order, ports, target_ip):
 
         print('{:<20}'.format('PORT'), '{:^20}'.format('STATE'), '{:>20}'.format('SERVICE')) 
 
-        port_list = []
+        port_list = [] # add port numbers to list to later shuffle 
 
         for i in range (0, endport + 1): # the plus 1 is because of how python range() works
             port_list.append(i)

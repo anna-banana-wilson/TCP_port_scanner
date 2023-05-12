@@ -1,9 +1,10 @@
 import logging
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR) # supresses annoying scapy warnings
 from scapy.all import *
 
 def syn(order, ports, target_ip):
 
+    # counter for the number of ports 
     num_open = 0
     
     if(ports == 'all'):
@@ -30,6 +31,7 @@ def syn(order, ports, target_ip):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
                     num_open += 1
 
+                    # grab service 
                     banner = socket.getservbyport(x, "tcp")
                     
                     print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
@@ -42,11 +44,11 @@ def syn(order, ports, target_ip):
 
         print('{:<10}'.format('PORT'), '{:^10}'.format('STATE'), '{:>10}'.format('SERVICE')) 
 
-        port_list = []
+        port_list = []  # add port numbers to a list to later shuffle 
 
         for i in range (0, endport + 1): # the plus 1 is because of how python range() works
             port_list.append(i)
-            # print('item in port list: ', i) # This number is correct! 
+           
         
         random.shuffle(port_list)
 
@@ -58,9 +60,9 @@ def syn(order, ports, target_ip):
             if not isinstance(response, type(None)):
                 if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
                     num_open += 1
-                    # print(x)
-                    banner = socket.getservbyport(x, "tcp")
                     
+                    # grab service 
+                    banner = socket.getservbyport(x, "tcp")
                     print('{:<10}'.format(x), '{:^10}'.format('open'), '{:>10}'.format(banner)) 
     
                     # send the RST packet (reset packet, so we can get rid of the connection and move onto the next one):
