@@ -41,4 +41,19 @@ The following example runs the project on normal mode, scanning the ports in ord
 
 ```Python3 port_scanner.py normal order known 111.111.11.11```
 
+## Individual Contributions and Challenges 
+Jade:
+- figured out how to implement argparse, which was different from using regular sys 
+- timing how long the port scanner took 
+- formatting the end aesthetics of the port scanner
+- research and finding resources that helped with the implementation process 
+- fin scan mode 3 and figuring out the bug that wouldn't work with getservbyport; using other method 
+Anna:
+- finding out how to implement mode 2 (SYN scan), from there the rest of the modes 
+- loops, options (random or order, etc), ping to ensure the host is alive 
+The Challenges We Overcame Together:
+- We largely pair-programmed this project. Most of the code was written collaboratively, so individual contributions don't apply as much as we physically met up seven or eight times to implement this together side by side. 
+- The biggest challenge we overcame was definitely the logic of the port scanner, we took a while figuring out what the output should be, especially when it came to the fin scan and retrieving banners. 
+- Another big challenge we faced was that at some point, Anna's computer could not run connect to the host at all and therefore could not run it. 
+- Another challenge was using Git in order to practice collaborating! Using GitHub was always finnicky for the both of us, so this project gave us a chance to practice that skill. 
 
